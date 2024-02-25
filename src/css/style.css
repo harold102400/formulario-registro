@@ -1,0 +1,15 @@
+.container_list {
+    width: 100%;
+    max-width: 1400px;
+    margin: 20px auto 20px auto;
+    padding: 30px 40px;
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+}
+
+.form-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto 20px auto;
+    padding: 30px 5rem;
+    box-shadow: rgba(0, 0, 0, 0.18) 0px 2px 4px;
+}
