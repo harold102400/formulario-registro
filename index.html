@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de registro</title>
+    <script src="./src/components/operations.js"></script>
+    <link rel="stylesheet" href="./src/css/style.css">
+</head>
+<body>
+    <header>
+        <nav></nav>
+    </header>
+
+    <main>
+        <article>
+            <section>
+                <h2 class="text-center">CRUD</h2>
+                <form class="form" id="form">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Nombre</label>
+                        <input type="text" class="form-control" placeholder="Ingrese su nombre" id="name">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Apellido</label>
+                        <input type="text" class="form-control" placeholder="Ingrese su apellido" id="lastname">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Telefono</label>
+                        <input type="number" class="form-control" placeholder="Ingrese su Telefono" id="phone">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email</label>
+                        <input type="email" class="form-control" placeholder="Ingrese su Email" id="email">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Cedula</label>
+                        <input type="number" class="form-control" placeholder="Ingrese su Cedula" id="badge">
+                    </div>
+            
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Fecha de nacimiento</label>
+                        <input type="date" class="form-control" placeholder="Ingrese su Fecha de nacimiento" id="dob">
+                    </div>
+            
+                    <button type="submit" class="btn btn-primary">Agregar usuario</button>
+                </form>
+            </section>
+
+            <section>
+                <div class="container_list">
+                    <table class="table" border="1">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">id</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Apellido</th>
+                                <th scope="col">Telefono</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Cedula</th>
+                                <th scope="col">Fecha de nacimiento</th>
+                                <th scope="col">Acciones</th>
+                                <th scope="col">Signo del sodiaco</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody">
+
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </article>
+    </main>
+</body>
+</html>
