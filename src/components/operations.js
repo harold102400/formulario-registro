@@ -1,5 +1,6 @@
 const zodialSigns = ["Acuario", "Piscis", "Aries", "Tauro", "Géminis","Cáncer","Leo", "Virgo", "Libra", "Escorpio", "Sagitario","Capricornio"];
 let users = [];
+console.log(users);
 let edit = false;
 const obj = {
     id: "",
@@ -21,7 +22,27 @@ const dob = document.getElementById('dob');
 
 form.addEventListener('submit', validate);
 
-function validate(){}
+function validate(e)
+{
+    e.preventDefault();
+    checkInputs();
+    if(validateForm()){
+        if (edit) {
+            editUser();
+            edit = false;
+        } else {
+            obj.id = randomId();
+            obj.name = formName.value;
+            obj.lastname = formLastname.value;
+            obj.phone = phone.value;
+            obj.email = email.value;
+            obj.badge = badge.value;
+            obj.dob = dob.value;
+
+            addNewUser();
+        }
+    }
+}
 
 ///Generate random ID function///
 function randomId()
@@ -35,9 +56,11 @@ function saveOnLocalStorage(users)
     localStorage.setItem('users', JSON.stringify(users));
 }
 
-function getLocalStorage()
+
+function getLocalStorage() 
 {
-    users = JSON.parse(localStorage.getItem('users'));
+    const localStorageUsers = JSON.parse(localStorage.getItem('users'));
+    users = localStorageUsers || [];
     showUsers();
 }
 
@@ -108,6 +131,7 @@ function showUsers()
     const tbody = document.querySelector('#tbody');
     tbody.innerHTML = "";
     ///es posible destructurar el obj user pero no lo voy hacer////
+    console.log(users);
     users.forEach(user => {
         const tr = document.createElement('tr');
         const tdActions = document.createElement('td');
@@ -160,3 +184,135 @@ function zodialSign(month)
     const d = new Date(month);
     return zodialSigns[d.getMonth()];
 }
+
+//////Form Validations/////////////
+
+function validateForm()
+{
+    return (
+        formName.parentElement.classList.contains('success') &&
+        formLastname.parentElement.classList.contains('success') &&
+        phone.parentElement.classList.contains('success') &&
+        email.parentElement.classList.contains('success') &&
+        badge.parentElement.classList.contains('success') &&
+        dob.parentElement.classList.contains('success') 
+    );
+}
+
+function checkInputs()
+{
+    const nameValue = formName.value.trim();
+    const inputLastnameValue = formLastname.value.trim();
+    const inputPhoneValue = phone.value.trim();
+    const inputEmailValue = email.value.trim();
+    const inputBadgeValue = badge.value.trim();
+    const inputDobValue = dob.value.trim();
+
+    if (nameValue === '') {
+        setErrorFor(formName, 'Nombre no puede estar vacío!');
+    } else {
+        setSuccessFor(formName);
+    }
+
+    if (inputLastnameValue === '') {
+        setErrorFor(formLastname, 'Apellido no puede estar vacío!');
+    } else {
+        setSuccessFor(formLastname);
+    }
+
+    if (edit) {
+        setSuccessFor(phone);
+        setSuccessFor(badge);
+        setSuccessFor(email);
+    } else {
+        if (inputPhoneValue === '' || inputPhoneValue.length < 10) {
+            setErrorFor(phone, 'Phone no puede estar vacío!');
+        } else if (validatePhone()) { 
+            setErrorFor(phone, 'Este número ya existe!');
+        } else {
+            setSuccessFor(phone);
+        }
+    
+        if (inputBadgeValue === '' || inputBadgeValue.length < 9) {
+            setErrorFor(badge, 'Cédula no puede estar vacía!');
+        } else if (validateBadge()) { 
+            setErrorFor(badge, 'Esta cédula ya existe!');
+        } else {
+            setSuccessFor(badge);
+        }
+
+        if (inputEmailValue === '') {
+            setErrorFor(email, 'Email no puede estar vacío!');
+        } else if (!isEmail(inputEmailValue)) {
+            setErrorFor(email, 'No es un email valido!');
+        } else if(validateEmail()){
+            setErrorFor(email, 'Esta email ya existe!');
+        } else {
+            setSuccessFor(email);
+        }
+    
+    }
+
+    if (inputDobValue === '') {
+        setErrorFor(dob, 'Fecha de nacimiento no puede estar en blanco!');
+    } else {
+        setSuccessFor(dob);
+    }
+}
+
+function setErrorFor(input, message)
+{
+    const formControl = input.parentElement;
+    console.log(formControl);
+    const small = formControl.querySelector('small');
+    console.log(small);
+    formControl.classList.add('error');
+    formControl.classList.remove('success');
+    small.innerHTML = message;
+}
+
+function setSuccessFor(input)
+{
+    const formControl = input.parentElement;
+    formControl.classList.add('success');
+    formControl.classList.remove('error');
+}
+
+function isEmail(email)
+{
+    return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(email);
+}
+
+function validateBadge()
+{
+    return users.find(user => user.badge === badge.value);
+}
+
+function validatePhone()
+{
+    return users.find(user => user.phone === phone.value);
+}
+
+function validateEmail()
+{
+    return users.find(user => user.email === email.value);
+}
+
+function resetFields()
+{
+    setDefaultFor(formName);
+    setDefaultFor(formLastname);
+    setDefaultFor(phone);
+    setDefaultFor(email);
+    setDefaultFor(badge);
+    setDefaultFor(dob);
+}
+
+function setDefaultFor(input)
+{
+    const formControl = input.parentElement;
+    formControl.classList.remove('success');
+    formControl.classList.remove('error');
+}
+
+getLocalStorage();
