@@ -99,3 +99,64 @@ function deleteUser(id)
     saveOnLocalStorage(users);
     getLocalStorage();
 }
+
+/////Show users on the HTML from javascript///////
+
+
+function showUsers()
+{
+    const tbody = document.querySelector('#tbody');
+    tbody.innerHTML = "";
+    ///es posible destructurar el obj user pero no lo voy hacer////
+    users.forEach(user => {
+        const tr = document.createElement('tr');
+        const tdActions = document.createElement('td');
+
+        const thId = document.createElement('th');
+        thId.textContent = `${user.id}`
+   
+
+        const tdName = document.createElement('td');
+        tdName.textContent = `${user.name}`
+
+        const tdLastname = document.createElement('td');
+        tdLastname.textContent = `${user.lastname}`
+
+        const tdPhone = document.createElement('td');
+        tdPhone.textContent = `${user.phone}`
+
+        const tdEmail = document.createElement('td');
+        tdEmail.textContent = `${user.email}`
+
+        const tdBadge = document.createElement('td');
+        tdBadge.textContent = `${user.badge}`
+
+        const tdDob = document.createElement('td');
+        tdDob.textContent = `${user.dob}`
+        console.log(user.dob);
+
+        let zodialSignTxt = zodialSign(user.dob);
+        const tdZodialSign = document.createElement('td');
+        tdZodialSign.textContent = `Tu Zigno del Sodiaco es: ${zodialSignTxt}`;
+
+        const editBtn = document.createElement('button');
+        editBtn.textContent = "Editar";
+        editBtn.onclick = () => selectUser(user);
+        editBtn.classList.add("btn", "btn-warning", "ml-1")
+
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = "Eliminar";
+        removeBtn.onclick = () => deleteUser(user.id);
+        removeBtn.classList.add("btn", "btn-danger")
+
+        tdActions.append(editBtn, removeBtn);
+        tr.append(thId, tdName, tdLastname, tdPhone, tdEmail, tdBadge, tdDob, tdActions, tdZodialSign);
+        tbody.append(tr);
+    })
+}
+
+function zodialSign(month)
+{
+    const d = new Date(month);
+    return zodialSigns[d.getMonth()];
+}
